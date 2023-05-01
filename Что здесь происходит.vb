@@ -1,91 +1,91 @@
-'Задание - объясни "что здесь происходит"?
+'Р—Р°РґР°РЅРёРµ - РѕР±СЉСЏСЃРЅРё "С‡С‚Рѕ Р·РґРµСЃСЊ РїСЂРѕРёСЃС…РѕРґРёС‚"?
 
-'в этом задании надо рассмотреть код, и добавить комментарии где есть ' для чего этот код или что происходит по ходу выполнения кода
+'РІ СЌС‚РѕРј Р·Р°РґР°РЅРёРё РЅР°РґРѕ СЂР°СЃСЃРјРѕС‚СЂРµС‚СЊ РєРѕРґ, Рё РґРѕР±Р°РІРёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё РіРґРµ РµСЃС‚СЊ ' РґР»СЏ С‡РµРіРѕ СЌС‚РѕС‚ РєРѕРґ РёР»Рё С‡С‚Рѕ РїСЂРѕРёСЃС…РѕРґРёС‚ РїРѕ С…РѕРґСѓ РІС‹РїРѕР»РЅРµРЅРёСЏ РєРѕРґР°
 
 
-' Поиск сущности в БД, изменение сущности путем вызова метода, сохранение изменений в базу 
+' РџРѕРёСЃРє СЃСѓС‰РЅРѕСЃС‚Рё РІ Р‘Р”, РёР·РјРµРЅРµРЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё РїСѓС‚РµРј РІС‹Р·РѕРІР° РјРµС‚РѕРґР°, СЃРѕС…СЂР°РЅРµРЅРёРµ РёР·РјРµРЅРµРЅРёР№ РІ Р±Р°Р·Сѓ 
 Public Sub Example1(ByVal uidPersonWantsOrg As String, ByVal uidPersonHead As String, ByVal bDecision As Boolean, ByVal strText As String)
-	' объявляем переменную типа IEntity
+	' РѕР±СЉСЏРІР»СЏРµРј РїРµСЂРµРјРµРЅРЅСѓСЋ С‚РёРїР° IEntity
 	Dim dbPersonWantsOrg As IEntity
-	' Поиск сущости PersonWantsOrg по её id, сохраняем в переменную
+	' РџРѕРёСЃРє СЃСѓС‰РѕСЃС‚Рё PersonWantsOrg РїРѕ РµС‘ id, СЃРѕС…СЂР°РЅСЏРµРј РІ РїРµСЂРµРјРµРЅРЅСѓСЋ
 	dbPersonWantsOrg = Session.Source.Get("PersonWantsOrg", uidPersonWantsOrg)
-	' Начало блока Try (в блоке Catch будет обработка ошибка)
+	' РќР°С‡Р°Р»Рѕ Р±Р»РѕРєР° Try (РІ Р±Р»РѕРєРµ Catch Р±СѓРґРµС‚ РѕР±СЂР°Р±РѕС‚РєР° РѕС€РёР±РєР°)
 	Try
-		' вызов метода MakeDecisionEx у dbPersonWantsOrg, скорее всего внутри MakeDecisionEx изменяются поля
+		' РІС‹Р·РѕРІ РјРµС‚РѕРґР° MakeDecisionEx Сѓ dbPersonWantsOrg, СЃРєРѕСЂРµРµ РІСЃРµРіРѕ РІРЅСѓС‚СЂРё MakeDecisionEx РёР·РјРµРЅСЏСЋС‚СЃСЏ РїРѕР»СЏ
 		dbPersonWantsOrg.CallMethod("MakeDecisionEx", uidPersonHead, bDecision, strText)
-		' Результаты изменений сохраняются в источнике данных
+		' Р РµР·СѓР»СЊС‚Р°С‚С‹ РёР·РјРµРЅРµРЅРёР№ СЃРѕС…СЂР°РЅСЏСЋС‚СЃСЏ РІ РёСЃС‚РѕС‡РЅРёРєРµ РґР°РЅРЅС‹С…
 		dbPersonWantsOrg.Save(Session)
 
 	Catch ex As Exception
-		' обработка исключений, все ошибки логируются в файл
+		' РѕР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РµРЅРёР№, РІСЃРµ РѕС€РёР±РєРё Р»РѕРіРёСЂСѓСЋС‚СЃСЏ РІ С„Р°Р№Р»
 		VID_Write2Log("C:\Test.log", ViException.ErrorString(ex))
 
 	End Try
 
 End Sub
 
-' Метод без полезной нагрузки
+' РњРµС‚РѕРґ Р±РµР· РїРѕР»РµР·РЅРѕР№ РЅР°РіСЂСѓР·РєРё
 Public Sub Example2()
-	' Объявление переменной для коллекции сущностей из БД
+	' РћР±СЉСЏРІР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РґР»СЏ РєРѕР»Р»РµРєС†РёРё СЃСѓС‰РЅРѕСЃС‚РµР№ РёР· Р‘Р”
 	Dim colPersons As IEntityCollection
 	Dim dbPerson As IEntity
 	Dim f As ISqlFormatter = Session.SqlFormatter
-	' запрос к таблице Person с выбором всех столбцов
+	' Р·Р°РїСЂРѕСЃ Рє С‚Р°Р±Р»РёС†Рµ Person СЃ РІС‹Р±РѕСЂРѕРј РІСЃРµС… СЃС‚РѕР»Р±С†РѕРІ
 	Dim qPerson = Query.From("Person") _
 				  .SelectDisplays()
 
 	colPersons = Session.Source.GetCollection(qPerson)
-	' Цикл по всем элементам коллекции полученной коллекции из запроса
+	' Р¦РёРєР» РїРѕ РІСЃРµРј СЌР»РµРјРµРЅС‚Р°Рј РєРѕР»Р»РµРєС†РёРё РїРѕР»СѓС‡РµРЅРЅРѕР№ РєРѕР»Р»РµРєС†РёРё РёР· Р·Р°РїСЂРѕСЃР°
 	For Each colElement As IEntity In colPersons
-		'   сохраняем новый объект, у которого свойства будут вычисляться "лениво" (в момент обращения)
+		'   СЃРѕС…СЂР°РЅСЏРµРј РЅРѕРІС‹Р№ РѕР±СЉРµРєС‚, Сѓ РєРѕС‚РѕСЂРѕРіРѕ СЃРІРѕР№СЃС‚РІР° Р±СѓРґСѓС‚ РІС‹С‡РёСЃР»СЏС‚СЊСЃСЏ "Р»РµРЅРёРІРѕ" (РІ РјРѕРјРµРЅС‚ РѕР±СЂР°С‰РµРЅРёСЏ)
 		dbPerson = colElement.Create(Session, EntityLoadType.Interactive)
 	Next
 End Sub
 
-' Расчет кол-ва записей в таблице Person с условием по значению в колонке (кол-во пользователей, у которых FirstName = Paula)
+' Р Р°СЃС‡РµС‚ РєРѕР»-РІР° Р·Р°РїРёСЃРµР№ РІ С‚Р°Р±Р»РёС†Рµ Person СЃ СѓСЃР»РѕРІРёРµРј РїРѕ Р·РЅР°С‡РµРЅРёСЋ РІ РєРѕР»РѕРЅРєРµ (РєРѕР»-РІРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№, Сѓ РєРѕС‚РѕСЂС‹С… FirstName = Paula)
 Public Sub Example3()
-	' Выбираем данные из таблицы Person с фильтрацией по полю. SelectCount() указывает, что нужно получить только количество записей, удовлетворяющих этому запросу, а не сами записи
+	' Р’С‹Р±РёСЂР°РµРј РґР°РЅРЅС‹Рµ РёР· С‚Р°Р±Р»РёС†С‹ Person СЃ С„РёР»СЊС‚СЂР°С†РёРµР№ РїРѕ РїРѕР»СЋ. SelectCount() СѓРєР°Р·С‹РІР°РµС‚, С‡С‚Рѕ РЅСѓР¶РЅРѕ РїРѕР»СѓС‡РёС‚СЊ С‚РѕР»СЊРєРѕ РєРѕР»РёС‡РµСЃС‚РІРѕ Р·Р°РїРёСЃРµР№, СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РёС… СЌС‚РѕРјСѓ Р·Р°РїСЂРѕСЃСѓ, Р° РЅРµ СЃР°РјРё Р·Р°РїРёСЃРё
 	Dim qPerson = Query.From("Person") _
 				  .Where(Function(c) c.Column("FirstName") = "Paula").SelectCount()
-	' полученние результата запроса
+	' РїРѕР»СѓС‡РµРЅРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚Р° Р·Р°РїСЂРѕСЃР°
 	Dim iCount = Session.Source.GetCount(qPerson)
 End Sub
 
 
-' Обновление UID_Locality в Person в каждой записи (данные получаем из REST запроса)
+' РћР±РЅРѕРІР»РµРЅРёРµ UID_Locality РІ Person РІ РєР°Р¶РґРѕР№ Р·Р°РїРёСЃРё (РґР°РЅРЅС‹Рµ РїРѕР»СѓС‡Р°РµРј РёР· REST Р·Р°РїСЂРѕСЃР°)
 Public Sub Example4()
-	' Инициализация переменной свойством objects результата работы функции FGetPosition()
+	' РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРµСЂРµРјРµРЅРЅРѕР№ СЃРІРѕР№СЃС‚РІРѕРј objects СЂРµР·СѓР»СЊС‚Р°С‚Р° СЂР°Р±РѕС‚С‹ С„СѓРЅРєС†РёРё FGetPosition()
 	Dim positions = FGetPosition().objects
-	' f будет использоваться для форматирования SQL запросов в методе From объекта Query
+	' f Р±СѓРґРµС‚ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РґР»СЏ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёСЏ SQL Р·Р°РїСЂРѕСЃРѕРІ РІ РјРµС‚РѕРґРµ From РѕР±СЉРµРєС‚Р° Query
 	Dim f As ISqlFormatter = Session.SqlFormatter
 	Dim colPersons As IEntityCollection
-	' получение информации о табилце Person
+	' РїРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ С‚Р°Р±РёР»С†Рµ Person
 	Dim table = Connection.Tables("Person")
-	' вспомогательный объект для преобразования id строки в само значение. У таблицы Person есть поле CustomProperty04, связанное через FK с таблицей Locality
+	' РІСЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Р№ РѕР±СЉРµРєС‚ РґР»СЏ РїСЂРµРѕР±СЂР°Р·РѕРІР°РЅРёСЏ id СЃС‚СЂРѕРєРё РІ СЃР°РјРѕ Р·РЅР°С‡РµРЅРёРµ. РЈ С‚Р°Р±Р»РёС†С‹ Person РµСЃС‚СЊ РїРѕР»Рµ CustomProperty04, СЃРІСЏР·Р°РЅРЅРѕРµ С‡РµСЂРµР· FK СЃ С‚Р°Р±Р»РёС†РµР№ Locality
 	Dim columnUID_Locality As New ResolveImportValueHashed(
 		Connection,
 		ObjectWalker.ColDefs(table, "FK(UID_Locality).CustomProperty04"), False)
-	' создаем запрос из таблицы Person. Выбираемые столбцы не определены явно => запрос вернет все столбцы
+	' СЃРѕР·РґР°РµРј Р·Р°РїСЂРѕСЃ РёР· С‚Р°Р±Р»РёС†С‹ Person. Р’С‹Р±РёСЂР°РµРјС‹Рµ СЃС‚РѕР»Р±С†С‹ РЅРµ РѕРїСЂРµРґРµР»РµРЅС‹ СЏРІРЅРѕ => Р·Р°РїСЂРѕСЃ РІРµСЂРЅРµС‚ РІСЃРµ СЃС‚РѕР»Р±С†С‹
 	Dim query As Query = query.From("Person").SelectNone()
-	' Добавляем в результирующую выборку запроса колонку CentralAccount
+	' Р”РѕР±Р°РІР»СЏРµРј РІ СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰СѓСЋ РІС‹Р±РѕСЂРєСѓ Р·Р°РїСЂРѕСЃР° РєРѕР»РѕРЅРєСѓ CentralAccount
 	query = query.Select("CentralAccount")
 	query = query.Select("UID_Locality")
-	' добавляем фильтрацию по полю EntryDate
+	' РґРѕР±Р°РІР»СЏРµРј С„РёР»СЊС‚СЂР°С†РёСЋ РїРѕ РїРѕР»СЋ EntryDate
 	query = query.Where("EntryDate Is Not null")
 	query = query.Where("IsInActive=0")
-	' выполняем запрос, получаем коллекцию элементов из таблицы Person
+	' РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ, РїРѕР»СѓС‡Р°РµРј РєРѕР»Р»РµРєС†РёСЋ СЌР»РµРјРµРЅС‚РѕРІ РёР· С‚Р°Р±Р»РёС†С‹ Person
 	colPersons = Session.Source.GetCollection(query)
 
-	'цикл по каждому элементу полученной коллекции
+	'С†РёРєР» РїРѕ РєР°Р¶РґРѕРјСѓ СЌР»РµРјРµРЅС‚Сѓ РїРѕР»СѓС‡РµРЅРЅРѕР№ РєРѕР»Р»РµРєС†РёРё
 	For Each colElement As IEntity In colPersons
 		Dim valUID_Locality As String
 		Dim position As TSPosition
-		' если в полученных данных через REST запрос есть элемент с условием, описываемым лямбдой, то вычисляем новое значение valUID_Locality
+		' РµСЃР»Рё РІ РїРѕР»СѓС‡РµРЅРЅС‹С… РґР°РЅРЅС‹С… С‡РµСЂРµР· REST Р·Р°РїСЂРѕСЃ РµСЃС‚СЊ СЌР»РµРјРµРЅС‚ СЃ СѓСЃР»РѕРІРёРµРј, РѕРїРёСЃС‹РІР°РµРјС‹Рј Р»СЏРјР±РґРѕР№, С‚Рѕ РІС‹С‡РёСЃР»СЏРµРј РЅРѕРІРѕРµ Р·РЅР°С‡РµРЅРёРµ valUID_Locality
 		If positions.Exists(Function(x) x.user.username = colElement.GetValue("CentralAccount") And Not IsNothing(x.office)) Then
 			position = positions.First(Function(x) x.user.username = colElement.GetValue("CentralAccount") And Not IsNothing(x.office))
 			valUID_Locality = "office" + position.office.id
 		Else
-			' переходим к следующей итерации foreach
+			' РїРµСЂРµС…РѕРґРёРј Рє СЃР»РµРґСѓСЋС‰РµР№ РёС‚РµСЂР°С†РёРё foreach
 			Continue For
 		End If
 
@@ -93,26 +93,26 @@ Public Sub Example4()
 		Dim resUID_Locality As String
 		resUID_Locality = DbVal.ConvertTo(Of String)(columnUID_Locality.ResolveValue(valUID_Locality))
 
-		'заводим переменную entity
+		'Р·Р°РІРѕРґРёРј РїРµСЂРµРјРµРЅРЅСѓСЋ entity
 		Dim entity As IEntity = Nothing
-		'fullEntity будет заполняться лениво из colElement
+		'fullEntity Р±СѓРґРµС‚ Р·Р°РїРѕР»РЅСЏС‚СЊСЃСЏ Р»РµРЅРёРІРѕ РёР· colElement
 		Dim fullEntity As New Lazy(Of IEntity)(Function() colElement.Create(Session))
 
-		' если старое значение colElement.UID_Locality отличается от нового resUID_Locality, то выполняется отложенная инициализация fullEntity, мы изменяем поле UID_Locality на новое
+		' РµСЃР»Рё СЃС‚Р°СЂРѕРµ Р·РЅР°С‡РµРЅРёРµ colElement.UID_Locality РѕС‚Р»РёС‡Р°РµС‚СЃСЏ РѕС‚ РЅРѕРІРѕРіРѕ resUID_Locality, С‚Рѕ РІС‹РїРѕР»РЅСЏРµС‚СЃСЏ РѕС‚Р»РѕР¶РµРЅРЅР°СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ fullEntity, РјС‹ РёР·РјРµРЅСЏРµРј РїРѕР»Рµ UID_Locality РЅР° РЅРѕРІРѕРµ
 		If DbVal.Compare(colElement.GetRaw("UID_Locality"), resUID_Locality, ValType.String) <> 0 Then
 			fullEntity.Value.PutValue("UID_Locality", resUID_Locality)
 		End If
 
-		' если была выполнены отложенная инициализация 
+		' РµСЃР»Рё Р±С‹Р»Р° РІС‹РїРѕР»РЅРµРЅС‹ РѕС‚Р»РѕР¶РµРЅРЅР°СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ 
 		If fullEntity.IsValueCreated Then
-			' сохраняем само значение
+			' СЃРѕС…СЂР°РЅСЏРµРј СЃР°РјРѕ Р·РЅР°С‡РµРЅРёРµ
 			entity = fullEntity.Value
 		End If
-		' Если entity определено
+		' Р•СЃР»Рё entity РѕРїСЂРµРґРµР»РµРЅРѕ
 		If Not entity Is Nothing Then
-			' Если entity изменено
+			' Р•СЃР»Рё entity РёР·РјРµРЅРµРЅРѕ
 			If entity.IsDifferent Then
-				'сохраняем изменения для entity в базе
+				'СЃРѕС…СЂР°РЅСЏРµРј РёР·РјРµРЅРµРЅРёСЏ РґР»СЏ entity РІ Р±Р°Р·Рµ
 				entity.Save(Session)
 			End If
 		End If
@@ -128,12 +128,12 @@ Imports TStem.Collections.Generic
 Imports TStem.Data
 Imports TStem.Net
 Imports TStem.IO
-' импортируем пакет для сериализации/десериализации
+' РёРјРїРѕСЂС‚РёСЂСѓРµРј РїР°РєРµС‚ РґР»СЏ СЃРµСЂРёР°Р»РёР·Р°С†РёРё/РґРµСЃРµСЂРёР°Р»РёР·Р°С†РёРё
 Imports Newtonsoft.Json
 #End If
 
 Public Function FGetPosition() As PositionList
-	' задаем название метода api для выполнения первого запроса
+	' Р·Р°РґР°РµРј РЅР°Р·РІР°РЅРёРµ РјРµС‚РѕРґР° api РґР»СЏ РІС‹РїРѕР»РЅРµРЅРёСЏ РїРµСЂРІРѕРіРѕ Р·Р°РїСЂРѕСЃР°
 	Dim apimethod As String = "/positions/"
 	Dim host = "https://targetTStem.example.ru/REST"
 	Dim page As String = apimethod
@@ -141,32 +141,32 @@ Public Function FGetPosition() As PositionList
 	Dim positionlist As New TSPositionList
 	Dim position As New List(Of TSPosition)
 	Dim meta As New TSMeta
-	' для коллекции объектов результирующего объекта присваиваем пустую коллекцию 
+	' РґР»СЏ РєРѕР»Р»РµРєС†РёРё РѕР±СЉРµРєС‚РѕРІ СЂРµР·СѓР»СЊС‚РёСЂСѓСЋС‰РµРіРѕ РѕР±СЉРµРєС‚Р° РїСЂРёСЃРІР°РёРІР°РµРј РїСѓСЃС‚СѓСЋ РєРѕР»Р»РµРєС†РёСЋ 
 	positionlist.objects = position
 	positionlist.meta = meta
-	'тело цикла будет выполняться пока в page будет непустое значение (предусмотрена пагинация)
+	'С‚РµР»Рѕ С†РёРєР»Р° Р±СѓРґРµС‚ РІС‹РїРѕР»РЅСЏС‚СЊСЃСЏ РїРѕРєР° РІ page Р±СѓРґРµС‚ РЅРµРїСѓСЃС‚РѕРµ Р·РЅР°С‡РµРЅРёРµ (РїСЂРµРґСѓСЃРјРѕС‚СЂРµРЅР° РїР°РіРёРЅР°С†РёСЏ)
 	While Not String.IsNullOrEmpty(page)
 		uri = host & page
-		' создаем запрос к "https://targetTStem.example.ru/REST/position/"
+		' СЃРѕР·РґР°РµРј Р·Р°РїСЂРѕСЃ Рє "https://targetTStem.example.ru/REST/position/"
 		Dim req As WebRequest = WebRequest.Create(uri)
-		' Устанавливаем тип запроса (GET)
+		' РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РёРї Р·Р°РїСЂРѕСЃР° (GET)
 		req.Method = "GET"
 		req.ContentType = "application/json"
-		' Объявляем переменную для ответа
+		' РћР±СЉСЏРІР»СЏРµРј РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ РѕС‚РІРµС‚Р°
 		Dim response As String
-		' выполняем запрос и получаем ответ, результат преобразуем в HttpWebResponse. Using/End Using гарантирует корректное автоматическое освобождение ресурсов после завершения секции
+		' РІС‹РїРѕР»РЅСЏРµРј Р·Р°РїСЂРѕСЃ Рё РїРѕР»СѓС‡Р°РµРј РѕС‚РІРµС‚, СЂРµР·СѓР»СЊС‚Р°С‚ РїСЂРµРѕР±СЂР°Р·СѓРµРј РІ HttpWebResponse. Using/End Using РіР°СЂР°РЅС‚РёСЂСѓРµС‚ РєРѕСЂСЂРµРєС‚РЅРѕРµ Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРѕРµ РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ РїРѕСЃР»Рµ Р·Р°РІРµСЂС€РµРЅРёСЏ СЃРµРєС†РёРё
 		Using result As HttpWebResponse = CType(req.GetResponse(), HttpWebResponse)
 			Dim sResponse As String = ""
-			' Создаем stream reader для чтения данных из ответа на запрос
+			' РЎРѕР·РґР°РµРј stream reader РґР»СЏ С‡С‚РµРЅРёСЏ РґР°РЅРЅС‹С… РёР· РѕС‚РІРµС‚Р° РЅР° Р·Р°РїСЂРѕСЃ
 			Using srRead As New StreamReader(result.GetResponseStream())
 				sResponse = srRead.ReadToEnd()
 				response = sResponse
-				'десериализуем ответ в модель типа TSPositionList
+				'РґРµСЃРµСЂРёР°Р»РёР·СѓРµРј РѕС‚РІРµС‚ РІ РјРѕРґРµР»СЊ С‚РёРїР° TSPositionList
 				Dim tspositionlist As TSPositionList = JsonConvert.DeserializeObject(Of TSPositionList)(sResponse)
 				positionlist.objects.AddRange(tspositionlist.objects)
 				positionlist.meta = tspositionlist.meta
 				page = tspositionlist.meta.next
-				' Закрываем ответ на запрос, освобождаем ресурсы (соединение с сервером, поток данных и т.п.)
+				' Р—Р°РєСЂС‹РІР°РµРј РѕС‚РІРµС‚ РЅР° Р·Р°РїСЂРѕСЃ, РѕСЃРІРѕР±РѕР¶РґР°РµРј СЂРµСЃСѓСЂСЃС‹ (СЃРѕРµРґРёРЅРµРЅРёРµ СЃ СЃРµСЂРІРµСЂРѕРј, РїРѕС‚РѕРє РґР°РЅРЅС‹С… Рё С‚.Рї.)
 				result.Close()
 			End Using
 		End Using
@@ -177,7 +177,7 @@ Public Function FGetPosition() As PositionList
 End Function
 
 
-' метаинформация результата запроса, хранит информацию о пагинации
+' РјРµС‚Р°РёРЅС„РѕСЂРјР°С†РёСЏ СЂРµР·СѓР»СЊС‚Р°С‚Р° Р·Р°РїСЂРѕСЃР°, С…СЂР°РЅРёС‚ РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїР°РіРёРЅР°С†РёРё
 Public Class TSMeta
 	Public [next] As String
 	Public previous As String
@@ -185,25 +185,25 @@ Public Class TSMeta
 	Public objects_count As Integer
 End Class
 
-' Обертка над TSMeta
+' РћР±РµСЂС‚РєР° РЅР°Рґ TSMeta
 Public Class TSObject
 	Public meta As TSMeta
 End Class
 
-' Модель, возвращаемая на запрос 
+' РњРѕРґРµР»СЊ, РІРѕР·РІСЂР°С‰Р°РµРјР°СЏ РЅР° Р·Р°РїСЂРѕСЃ 
 Public Class TSPositionList
 	Inherits SysObject
 	Public objects As List(Of SysPosition)
 End Class
 
-' Модель, описывающая Position
+' РњРѕРґРµР»СЊ, РѕРїРёСЃС‹РІР°СЋС‰Р°СЏ Position
 Public Class TSPosition
 	Public id As String
 	Public description As String
 	Public office As TSOffice
 End Class
 
-' Модель, описывающая офис
+' РњРѕРґРµР»СЊ, РѕРїРёСЃС‹РІР°СЋС‰Р°СЏ РѕС„РёСЃ
 Public Class TSOffice
 	Public id As String
 	Public description As String '
