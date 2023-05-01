@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VK_IDM", "VK_IDM\VK_IDM.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginsGenerator", "LoginsGenerator\LoginsGenerator.csproj", "{AC04BF3E-A52D-4CC6-9A48-7AF0750DD507}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{24A8B842-A755-46BD-BDDE-07956FF310FA}"
+	ProjectSection(SolutionItems) = preProject
+		Что здесь происходит.vb = Что здесь происходит.vb
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
