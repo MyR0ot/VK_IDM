@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "login": "pety",
+        "personId": 1,
+        "specialization": "Аналитик",
+        "date_hired": "2020-06-22",
+        "date_fired": "2021-06-20"
+    },
+    {
+        "id": 2,
+        "login": "pety",
+        "personId": 1,
+        "specialization": "Бизнес аналитик",
+        "date_hired": "2022-01-22",
+        "date_fired": null
+    },
+    {
+        "id": 3,
+        "login": "pety",
+        "personId": 1,
+        "specialization": "Бизнес аналитик",
+        "date_hired": "2018-01-01",
+        "date_fired": "2019-01-01"
+    },
+    {
+        "id": 4,
+        "login": "ivan",
+        "personId": 2,
+        "specialization": "Программист",
+        "date_hired": "2020-06-22",
+        "date_fired": null
+    },
+    {        
+        "id": 5,
+        "login": "vasy",
+        "personID": 3,
+        "specialization": "Администратор",
+        "date_hired": "2020-06-22",
+        "date_fired": "2021-06-22"
+    },
+    {
+        "id": 6,
+        "login": "irina",
+        "personID": 4,
+        "specialization": "Старший инженер по тестированию",
+        "date_hired": "2020-06-22",
+        "date_fired": "2022-02-20"
+    }
+]
